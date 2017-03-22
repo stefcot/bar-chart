@@ -171,6 +171,7 @@ bower_components
 jspm_packages
 src/scss/compass-mixins/lib
 src/scss/partials/_normalize.scss
+src/js/router/router.es5.min.js
 src/js/bower
 
 ################################# GIT #################################
