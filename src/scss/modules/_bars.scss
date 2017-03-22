@@ -1,0 +1,33 @@
+/**
+ * EMPTY CELL AND DATE CELL
+ */
+
+@mixin left-column-cell($el) {
+  display: table-cell;
+  position: relative;
+  vertical-align: middle;
+  color: $white;
+  font-size: $date-size + em;
+  padding-right: $date-size + em;
+
+  #{$el}__h-stroke {
+    @extend .h-stroke;
+    left: auto;
+    bottom: 0;
+    width: $date-size + em;
+  }
+}
+
+@mixin right-column-cell($el, $alpha) {
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+  border-left: 1px solid $white;
+  border-bottom: 1px solid rgba(255,255,255, .5);
+  width: 100%;
+
+  &--empty {
+    /* See: http://www.stripegenerator.com/index.php for dashed backgrounds */
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAAwklEQVRYhcXWsQ2DUBADUCfZNqLKIFSIBTIGC1FQMUEaJAT68P/d+Rz31pM7P6bpC2/6YXR3n39RP93bCQdV+BbHVQ9MUc0wS7XBRNUAc9VWmK42wRlqHU5SK3CeegenqpdwtlqGBWoB1qhnWKYeYKW6w2J1g/UqgNeyznoVkc8VUfthdMJBFb7FcdUDU1QzzFJtMFE1wFy1FaarTXCGWoeT1Aqcp97BqeolnK2WYYFagDXqGZapB1ip7rBY3WC9CuAHGN96MDfNaUQAAAAASUVORK5CYII=');
+  }
+}

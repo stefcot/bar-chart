@@ -132,7 +132,7 @@ dist
 .nyc_output/
 coverage/
 
-############################# NPM ################################
+############################### NPM ##################################
 #npm
 npm-debug.log
 
@@ -165,11 +165,16 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directory
+# Dependency directory and files
 node_modules
 bower_components
 jspm_packages
-src/scss/lib
+src/scss/compass-mixins/lib
+src/scss/partials/_normalize.scss
+src/js/bower
+
+################################# GIT #################################
+.gitconfig
 
 # Publish directory
 .publish
@@ -238,7 +243,7 @@ fabric.properties
 # Notepad++ backups #
 *.bak
 
-#Mac
+# Mac
 *.DS_Store
 .AppleDouble
 .LSOverride
@@ -340,4 +345,3 @@ local.properties
 
 # Code Recommenders
 .recommenders/
-

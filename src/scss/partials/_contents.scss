@@ -1,0 +1,43 @@
+* {
+  @include user-select(none);
+  cursor: default;
+}
+
+*,
+*::before,
+*::after {
+  @include box-sizing(border-box);
+  color: #000;
+}
+
+html, body {
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: $font-family;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $sw1-darkgrey;
+  color: $white;
+}
+
+#root {
+  position: relative;
+  height: 100%;
+}
+
+h1 {
+  @extend .din-regular;
+  font-size: $title-size;
+  height: $title-size;
+  line-height: $title-size;
+  color: $sw1-cream;
+  width: 100%;
+  margin: 0;
+  padding: 0 1em;
+}

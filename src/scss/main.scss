@@ -1,6 +1,10 @@
-@import 'lib/compass';
+// Modules and Variables
+@import "partials/base";
 
-body {
-  background: none;
-  color: tint(#000000, 50%);
-}
+// Partials
+@import "partials/fontface";
+@import "partials/normalize";
+@import "partials/contents";
+
+// Components
+@import 'components/all';

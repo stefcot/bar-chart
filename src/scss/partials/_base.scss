@@ -1,0 +1,23 @@
+@import '../compass-mixins/lib/compass';
+
+// COLORS
+$white: #FFFFFF;
+$black: #000000;
+
+// FONTS
+$font-family: 'DIN', Arial;
+
+// BAR CHART TITLE
+$title-size: 3em;
+
+// BARS
+$bar-height: 3;
+
+// DATE
+$date-size: 1.5;
+
+// POPIN
+$close-btn-size: 1.6em;
+$popin-padding: 2;
+
+@import '../modules/all';

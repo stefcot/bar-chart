@@ -1,0 +1,18 @@
+.stroke {
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  background: $white;
+}
+
+.h-stroke {
+  @extend .stroke;
+  right: 0;
+  height: 1px;
+}
+
+.v-stroke {
+  @extend .stroke;
+  width: 1px;
+  height: 100%;
+}

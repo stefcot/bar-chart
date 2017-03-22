@@ -1,0 +1,57 @@
+/**
+ * GRID ROW CONTENTS
+ */
+
+/**
+ * DATE CELL
+ */
+.date {
+  @include left-column-cell(&);
+}
+
+/**
+ * BAR CELL
+ */
+.bars {
+
+  @include right-column-cell(&,.5);
+
+  &--first {
+    border-top: 1px solid $white;
+  }
+
+  .bar {
+    width: 5em;
+    height: $bar-height + em;
+    display: block;
+    position: relative;
+    @include border-radius(0 ($bar-height/2) + em ($bar-height/2) + em 0);
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &__name {
+      position: absolute;
+      pointer-events: none;
+      display: inline-block;
+      right: (($bar-height/2) - ($bar-height/3)) + em;
+      top: 50%;
+      @include translateY(-50%);
+      @include border-radius(($bar-height/3) + em);
+      height: ($bar-height/1.5) + em;
+      line-height: ($bar-height/1.5) + em;
+      padding: 0 ($bar-height/3) + em;
+      background: $white;
+      color: $black;
+    }
+
+    &--pink {
+      background: $sw1-pink;
+    }
+
+    &--purple {
+      background: $sw1-purple;
+    }
+  }
+}

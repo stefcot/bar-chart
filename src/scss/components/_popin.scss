@@ -1,0 +1,150 @@
+.popin {
+  position: fixed;
+  display: table-cell;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  vertical-align: middle;
+  overflow: hidden;
+  overflow-y: auto;
+
+  /* See: http://png-pixel.com */
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=');
+
+  &__content {
+    $content: &;
+    $content-row: #{$content}__row;
+
+    position: relative;
+    width: 50%;
+    background: $white;
+    padding: ($popin-padding/2) + em $popin-padding + em $popin-padding + em $popin-padding + em;
+    margin: 0 auto;
+    top: 50%;
+    @include translateY(-50%);
+    @include border-radius(($popin-padding/2) + em);
+
+    #{$content}__close {
+      position: absolute;
+      top: $popin-padding + em;
+      right: $popin-padding + em;
+      width: $close-btn-size;
+      height: $close-btn-size;
+      display: inline-block;
+      background: $white;
+
+      &:hover {
+        cursor: pointer;
+        #{$content}__cross1,
+        #{$content}__cross2 {
+          cursor: pointer;
+        }
+      }
+    }
+
+    #{$content}__cross1,
+    #{$content}__cross2 {
+      position: absolute;
+      background: $sw1-darkgrey;
+      width: 3px;
+      height: $close-btn-size;
+      top: 0;
+      left: 50%;
+    }
+
+    #{$content}__cross1 {
+      @include rotateZ(45deg)
+    }
+
+    #{$content}__cross2 {
+      @include rotateZ(-45deg)
+    }
+
+    h2 {
+      @extend .din-bold;
+      font-size: $popin-padding + em;
+      line-height: $popin-padding + em;
+      height: $popin-padding + em;
+      position: relative;
+      margin: 0;
+    }
+
+    &__infos {
+      position: relative;
+      display: table;
+      width: 100%;
+    }
+
+    &__row {
+      display: table-row;
+      width: 100%;
+
+      &--padding-top {
+        #{$content}__label, #{$content}__value {
+          padding-top: ($popin-padding/2) + em;
+        }
+      }
+    }
+
+    &__label, &__value {
+      display: table-cell;
+      width: 50%;
+      font-size: (($popin-padding/4)*3) + em;
+      line-height: (($popin-padding/4)*3) + em;
+      height: (($popin-padding/4)*3) + em;
+    }
+
+    &__label{
+      @extend .din-medium;
+    }
+
+    &__value {
+      @extend .din-regular;
+      color: $sw1-darkgrey;
+    }
+
+    &__scroll {
+      overflow: hidden;
+      overflow-y: auto;
+      height: 200px;
+      margin-top: 0.5em;
+    }
+
+    #{$content-row}--odd,
+    #{$content-row}--even{
+      #{$content}__label,
+      #{$content}__value {
+        @extend .din-regular;
+        color: $white;
+        padding-left: ($popin-padding/4) + em;
+        border-top: 1px solid $white;
+      }
+    }
+
+    #{$content-row}--odd {
+      background: $sw1-cream;
+    }
+
+    &--john {
+      #{$content}__label, h2 {
+        color: $sw1-pink;
+      }
+      #{$content-row}--even,
+      #{$content}__cross1,
+      #{$content}__cross2 {
+        background: $sw1-pink;
+      }
+    }
+
+    &--larry {
+      #{$content}__label, h2 {
+        color: $sw1-purple;
+      }
+      #{$content-row}--even,
+      #{$content}__cross1,
+      #{$content}__cross2 {
+        background: $sw1-purple;
+      }
+    }
+  }
+}

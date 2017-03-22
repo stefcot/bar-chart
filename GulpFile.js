@@ -1,17 +1,20 @@
-var gulp         = require('gulp'),
-    bower        = require('gulp-bower'),
-    sass         = require('gulp-sass'),
-    uglify       = require('gulp-uglifyjs'),
-    minifyCss    = require('gulp-minify-css'),
-    sourcemaps   = require('gulp-sourcemaps'),
-    prefix       = require('gulp-autoprefixer'),
-    rename       = require("gulp-rename"),
-    clean        = require('gulp-clean'),
-    watch        = require('gulp-watch'),
-    runSequence  = require('gulp-run-sequence'),
-    webserver    = require('gulp-webserver'),
-    header       = require('gulp-header'),
-    pkg          = require('./package.json');
+var gulp             = require('gulp'),
+    bower            = require('gulp-bower'),
+    mainBowerFiles   = require('main-bower-files'),
+    sass             = require('gulp-sass'),
+    uglify           = require('gulp-uglifyjs'),
+    minify           = require('gulp-minify'),
+    concat           = require('gulp-concat-sourcemap'),
+    minifyCss        = require('gulp-minify-css'),
+    sourcemaps       = require('gulp-sourcemaps'),
+    prefix           = require('gulp-autoprefixer'),
+    rename           = require("gulp-rename"),
+    clean            = require('gulp-clean'),
+    watch            = require('gulp-watch'),
+    runSequence      = require('gulp-run-sequence'),
+    webserver        = require('gulp-webserver'),
+    header           = require('gulp-header'),
+    pkg              = require('./package.json');
 
 /**
  * Return a header template for CSS and JS generated files
@@ -38,6 +41,14 @@ function getHeaderTemplate() {
  */
 gulp.task('bower', function() {
     return bower('./bower_components');
+});
+
+/**
+ * @see https://www.npmjs.com/package/main-bower-file
+ */
+gulp.task('bower:copy', function() {
+    return gulp.src(mainBowerFiles())
+        .pipe(gulp.dest('./src/js/bower'))
 });
 
 /**
@@ -70,7 +81,37 @@ gulp.task('webserver', function() {
  */
 gulp.task('compass:copy', function() {
     return gulp.src('./node_modules/compass-mixins/lib/**/*')
-        .pipe(gulp.dest('./src/scss/lib'));
+        .pipe(gulp.dest('./src/scss/compass-mixins/lib'));
+});
+
+/**
+ * Copies normalize.css reset file
+ *
+ * @see https://github.com/necolas/normalize.css/
+ */
+gulp.task('normalize:copy', function() {
+    return gulp.src('./node_modules/normalize.css/normalize.css')
+        .pipe(rename('_normalize.scss'))
+        .pipe(gulp.dest('./src/scss/partials'));
+});
+
+/**
+ * Copies src/fonts directory and its contents to dist directory
+ */
+gulp.task('fonts:copy', function() {
+    return gulp.src(['./src/fonts/**/*'], {
+            base: 'src'
+        }).pipe(gulp.dest('./dist'));
+});
+
+/**
+ * Copies simple router to handle hash changes
+ *
+ * @see https://www.npmjs.com/package/local-router
+ */
+gulp.task('router:copy', function() {
+    return gulp.src('./node_modules/local-router/dist/router.es5.min.js')
+        .pipe(gulp.dest('./src/js/router'));
 });
 
 /**
@@ -104,10 +145,17 @@ gulp.task('sass:build', function () {
  * @see https://www.npmjs.com/package/gulp-uglifyjs
  */
 gulp.task('js:build', function() {
-    return gulp.src(['./src/js/*.js', 'bower_components/**/*.js'])
-        .pipe(uglify('index.js', {
-            outSourceMap: true
+    return gulp.src(['./src/js/**/*.js'])
+        .pipe(concat('index.js', {
+            sourcesContent : true,
+            sourceRoot  : '',
+            prefix  : 'stefcot-',
+            sourceMappingBaseURL  : true
         }))
+        .pipe(minify())
+        // .pipe(uglify('index.js', {
+        //     outSourceMap: true
+        // }))
         .pipe(header(getHeaderTemplate(), { pkg : pkg } ))
         .pipe(gulp.dest('./dist/js'));
 });
@@ -149,7 +197,7 @@ gulp.task('watch', function() {
  * fetches JS front dependencies and compass environment first.
  */
 gulp.task('install', function() {
-    runSequence('bower', 'compass:copy', 'build');
+    runSequence('bower', 'bower:copy', 'compass:copy', 'normalize:copy', 'router:copy', 'build');
 });
 
 /**
@@ -158,10 +206,10 @@ gulp.task('install', function() {
  * finally initiating the watch process, ready to go!
  */
 gulp.task('build', function() {
-    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'webserver', 'watch');
+    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'fonts:copy', 'webserver', 'watch');
 });
 
 /**
- * Guess what ....
+ * Main call to gulp tasks
  */
 gulp.task('default', ['build']);
