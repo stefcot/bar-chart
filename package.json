@@ -12,6 +12,10 @@
     "local-router": "^2.0.0",
     "normalize.css": "^5.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stefcot/bar-chart"
+  },
   "readme": "README.md",
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -33,7 +37,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm install && gulp install"
+    "gulp": "gulp install"
   },
   "author": "s_cottereau@yahoo.fr",
   "license": "ISC"
