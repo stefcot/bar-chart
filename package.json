@@ -37,7 +37,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "gulp install"
+    "install": "gulp install"
   },
   "author": "s_cottereau@yahoo.fr",
   "license": "ISC"
