@@ -5,6 +5,9 @@ Classic install command for development project environment.
 ```
 npm install
 ```
+This command will run automatically gulp tasks to setup and run the project
+
+##### Gulp Manual install
 To install project dependencies, type this command to install<br>
 the project through gulp.
 ```
@@ -22,3 +25,7 @@ gulp
 ```
 This will build the project, sending all resources to the dist directory,
 then launch the local web-server and run the watch task for live reloading.
+
+#### About the project
+This project was supposed to be delivered developed in native Javascript
+without any library or framework.

@@ -24,6 +24,12 @@ html {
 body {
   background: $sw1-darkgrey;
   color: $white;
+  overflow: hidden;
+  overflow-y: auto;
+
+  &--popin-opened {
+    overflow-y: hidden;
+  }
 }
 
 #root {

@@ -1,6 +1,4 @@
 var gulp             = require('gulp'),
-    bower            = require('gulp-bower'),
-    mainBowerFiles   = require('main-bower-files'),
     sass             = require('gulp-sass'),
     uglify           = require('gulp-uglifyjs'),
     minify           = require('gulp-minify'),
@@ -30,26 +28,9 @@ function getHeaderTemplate() {
             ' * @license <%= pkg.license %> license.\n' +
             ' * \n' +
             ' * Last modified <%= new Date().toISOString() %>\n' +
-            ' * Copyright <%= new Date().getYear() %>, Fifty-Five, <%= pkg.author %>\n' +
+            ' * Copyright <%= new Date().getFullYear() %>, <%= pkg.author.name %> for Fifty-Five\n' +
             '*/\n\n';
 }
-
-/**
- * Fetches all extra JS front dependencies on project install.
- *
- * @see https://www.npmjs.com/package/gulp-bower
- */
-gulp.task('bower', function() {
-    return bower('./bower_components');
-});
-
-/**
- * @see https://www.npmjs.com/package/main-bower-file
- */
-gulp.task('bower:copy', function() {
-    return gulp.src(mainBowerFiles())
-        .pipe(gulp.dest('./src/js/bower'))
-});
 
 /**
  * Empties dist directory, used on project install.
@@ -100,10 +81,26 @@ gulp.task('normalize:copy', function() {
  */
 gulp.task('fonts:copy', function() {
     return gulp.src(['./src/fonts/**/*'], {
-            base: 'src'
-        }).pipe(gulp.dest('./dist'));
+        base: 'src'
+    }).pipe(gulp.dest('./dist'));
 });
 
+/**
+ * Copies templates directory and its contents to dist directory
+ */
+gulp.task('templates:copy', function() {
+    return gulp.src(['./src/templates/*'], {
+        base: 'src'
+    }).pipe(gulp.dest('./dist'));
+});
+
+/**
+ * Copies all polyfills listed (extensible)
+ */
+gulp.task('polyfills:copy', function() {
+    return gulp.src(['./node_modules/custom-event-polyfill/custom-event-polyfill.js'])
+        .pipe(gulp.dest('./src/js/polyfills'));
+});
 /**
  * Copies simple router to handle hash changes
  *
@@ -169,6 +166,14 @@ gulp.task('html:build', function() {
 });
 
 /**
+ * Simple copy of front files to dist directory on file change.
+ */
+gulp.task('templates:build', function() {
+    return gulp.src('./src/templates/**/*')
+        .pipe(gulp.dest('./dist'));
+});
+
+/**
  * Watch process calling the proper tasks, using gulp-watch which
  * I find much more reliable than the basic gulp method.
  *
@@ -190,14 +195,19 @@ gulp.task('watch', function() {
         console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
         gulp.start('html:build');
     });
+
+    watch('./src/templates/**/*', {usePolling: true}, function(vinyl) {
+        console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
+        gulp.start('templates:build');
+    });
 });
 
 /**
  * Tasks called on project install when developer executes 'npm install' script,
- * fetches JS front dependencies and compass environment first.
+ * fetches compass environment and JS front dependencies first.
  */
 gulp.task('install', function() {
-    runSequence('bower', 'bower:copy', 'compass:copy', 'normalize:copy', 'router:copy', 'build');
+    runSequence('compass:copy', 'normalize:copy', 'polyfills:copy', 'router:copy', 'build');
 });
 
 /**
@@ -206,7 +216,7 @@ gulp.task('install', function() {
  * finally initiating the watch process, ready to go!
  */
 gulp.task('build', function() {
-    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'fonts:copy', 'webserver', 'watch');
+    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'templates:copy', 'fonts:copy', 'webserver', 'watch');
 });
 
 /**

@@ -2,20 +2,17 @@
   "name": "bar-chart-fifty-five",
   "version": "1.0.0",
   "description": "Bar chart delivery test for Fifty Five March 2017",
-  "main": "dist/js/index.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "dist/js/index.min.js",
   "homepage": "http://www.fifty-five.fr",
-  "dependencies": {
-    "compass-mixins": "^0.12.10",
-    "local-router": "^2.0.0",
-    "normalize.css": "^5.0.0"
+  "author": {
+    "name" : "Stéphane Cottereau",
+    "email" : "s_cottereau@yahoo.fr"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/stefcot/bar-chart"
   },
+  "license": "ISC",
   "readme": "README.md",
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -32,13 +29,16 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglifyjs": "^0.6.2",
     "gulp-watch": "^4.3.11",
-    "gulp-webserver": "^0.9.1",
-    "main-bower-files": "^2.13.1"
+    "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "compass-mixins": "^0.12.10",
+    "custom-event-polyfill": "^0.3.0",
+    "local-router": "^2.0.0",
+    "normalize.css": "^5.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "gulp install"
-  },
-  "author": "s_cottereau@yahoo.fr",
-  "license": "ISC"
+  }
 }
