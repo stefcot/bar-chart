@@ -2,35 +2,9 @@
 var App = App || {};
 App.Components = App.Components || {};
 /**
- * POPIN COMPONENT, SINGLETON PATTERN
+ * Popin component, singleton pattern.
  */
-App.Components.Popin = (function(){
-    /**
-     * Raw template for building a score row
-     * @type {string}
-     *
-     * @private
-     */
-    var _scoreTemplate = '<div class="popin__content__row popin__content__row--{{number}}">' +
-                         '    <div class="popin__content__label">{{date}}</div>' +
-                         '    <div class="popin__content__value">{{score}} pts</div>' +
-                         '</div>';
-
-    /**
-     * Cache original raw template
-     * @type {string}
-     *
-     * @private (static)
-     */
-    var _template = '';
-
-    /**
-     * Cache original raw template
-     * @type {string}
-     *
-     * @private
-     */
-    var _data = '';
+App.Components.Popin = (function(d){
 
     /**
      * Prevent from conflict
@@ -41,27 +15,38 @@ App.Components.Popin = (function(){
     var _initialized = false;
 
     /**
-     * Attach an event to a given DOM Element
+     * Raw template for building a score row
      *
+     * @type {string}
      * @private
      */
-    var _initEvents = function () {
-        document.addEventListener('open.popin', _getTemplate);
-    };
+    var _scoreTemplate = '<div class="popin__content__row popin__content__row--{{number}}">\n' +
+                         '\t<div class="popin__content__label">{{date}}</div>\n' +
+                         '\t<div class="popin__content__value">{{score}} pts</div>\n' +
+                         '</div>\n';
 
     /**
-     * Load the Popin.html
+     * Cache original raw template
+     *
+     * @type {string}
+     * @private (static)
+     */
+    var _template = '';
+
+    /**
+     *
+     * @type {CustomEvent}
      * @private
      */
-    var _getTemplate = function(ev){
-        _data = ev.detail.data;
-        // Loading Template
-        App.Utils.Templates.getTemplate('Popin', {}, 'templates').then(
-            function(data){
-                _render(data);
-            }
-        );
-    };
+    var _routerEvent;
+
+    /**
+     * Stores data locally
+     *
+     * @type {object}
+     * @private
+     */
+    var _data = {};
 
     /**
      *
@@ -77,22 +62,53 @@ App.Components.Popin = (function(){
      *
      * @private
      */
-    var _closePopin = function(e){
-        var body = document.body, btnElement, selector;
-        // Takin the click over
+    var _btnCloseClick = function(e){
+        // Taking the click over
         e.preventDefault();
-        //
-        selector         = '.popin__content__close';
-        btnElement       = document.querySelector(selector);
-        // For ghost event prevention, detaching handlers
-        document.querySelector('.popin')
-            .removeEventListener("click", _closePopin);
-        btnElement
-            .removeEventListener("click", _closePopin);
-        // Removing popin
-        body.removeChild(body.querySelector('.popin'));
-        // Locking body scroll
-        body.classList.remove('body--popin-opened');
+        // Notifying history module
+        _routerEvent = new CustomEvent('router.pushstate', { detail: {
+            state: {},
+            name : 'home',
+            route : '/'
+        }});
+        // Triggering event to push history state
+        d.dispatchEvent(_routerEvent);
+    };
+
+    /**
+     *
+     * @private
+     */
+    var _close = function () {
+        var body = d.body;
+
+        if(d.querySelector('.popin') !== null){
+            // For ghost event prevention, detaching handlers
+            d.querySelector('.popin')
+                .removeEventListener("click", App.Components.Popin.closePopin);
+            d.querySelector('.popin__content__close')
+                .removeEventListener("click", App.Components.Popin.closePopin);
+            // Removing popin
+            body.removeChild(body.querySelector('.popin'));
+            // Locking body scroll
+            body.classList.remove('body--popin-opened');
+        }
+    };
+
+    /**
+     * Load the Popin.html, initialize the data object
+     *
+     * @param ev
+     * @private
+     */
+    var _open = function(ev){
+        _data = ev.detail.state;
+        // Loading Template through native promise
+        App.Utils.Templates.getTemplate('Popin', {}, '/templates').then(
+            function(data){
+                _render(data);
+            }
+        );
     };
 
     /**
@@ -138,7 +154,7 @@ App.Components.Popin = (function(){
                 })(i));
             //
             selector            = '.popin__content__scroll .popin__content__infos';
-            scoresContainer     = document.querySelector(selector);
+            scoresContainer     = d.querySelector(selector);
             // Adding score fragment to the score list
             scoresContainer.insertAdjacentHTML('beforeend', populatedFragment);
         }
@@ -155,14 +171,24 @@ App.Components.Popin = (function(){
         // Caching raw HTML template for further use/evolution (view refresh for instance)
         _template                = tmpl_str !== undefined ? tmpl_str : _template;
         // Prepending the popin component to the DOM
-        document.body.insertAdjacentHTML('afterbegin', populatedTemplate);
+        d.body.insertAdjacentHTML('afterbegin', populatedTemplate);
         // Locking body scroll
-        document.body.classList.add('body--popin-opened');
+        d.body.classList.add('body--popin-opened');
         // Adding scores to the DOM Component
         _insertScores(App.Model.data.DAILY);
         // Binding click action for closing detail popin
-        document.querySelector('.popin').addEventListener("click", _closePopin);
-        document.querySelector('.popin__content__close').addEventListener("click", _closePopin);
+        d.querySelector('.popin').addEventListener("click", _btnCloseClick);
+        d.querySelector('.popin__content__close').addEventListener("click", _btnCloseClick);
+    };
+
+    /**
+     * Attach an event to a given DOM Element
+     *
+     * @private
+     */
+    var _initEvents = function () {
+        d.addEventListener('open.popin', _open);
+        d.addEventListener('close.popin', _close);
     };
 
     /**
@@ -182,4 +208,4 @@ App.Components.Popin = (function(){
     return {
         init: _init
     };
-})();
+})(document);

@@ -32,6 +32,8 @@
     }
 
     &__name {
+      @extend .din-medium;
+      font-size: ($bar-height/3) + em;
       position: absolute;
       pointer-events: none;
       display: inline-block;
@@ -43,7 +45,7 @@
       line-height: ($bar-height/1.5) + em;
       padding: 0 ($bar-height/3) + em;
       background: $white;
-      color: $black;
+      color: $sw1-darkgrey;
     }
 
     &--john {

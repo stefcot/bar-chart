@@ -1,7 +1,6 @@
 'use strict';
 /**
- *
- * @type {{start}}
+ * APP ENTRY POINT, SINGLETON PATTEN
  */
 var App = (function () {
     /**
@@ -13,12 +12,16 @@ var App = (function () {
     var _initialized = false;
 
     /**
+     * Initialize all importants app
+     * modules
      *
      * @private
      */
     var _initComponents = function () {
         App.Components.BarChart.init();
         App.Components.Popin.init();
+        App.Utils.Router.init();
+        App.Utils.Navigation.init();
     };
 
     /**
@@ -28,7 +31,7 @@ var App = (function () {
     var _start = function () {
         if(!_initialized){
             App.Utils.Promise.getPromise({
-                url: 'api.json',
+                url: App.API_URL,
                 method:'GET',
                 dataType: 'json'
             }).then(
@@ -39,9 +42,7 @@ var App = (function () {
                     // we can initialize components
                     _initComponents();
                 },
-                function(errorObject){
-
-                }
+                function(errorObject){}
             );
 
             _initialized = true;
@@ -53,14 +54,15 @@ var App = (function () {
      */
     return {
         start: _start,
+        API_URL: 'http://cdn.55labs.com/demo/api.json',
+        API_LOCAL_URL: '/api.json',
         Model : {}
     }
-
 })();
 
 /**
- *
+ * LAUNCHING APPLICATION ON DOM READY
  */
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
     App.start();
 });

@@ -11,14 +11,21 @@ App.Components.BarChart = (function(){
      * @type {boolean}
      * @private
      */
-    var _initialized = false;
+    var _initialized = false,
 
     /**
      *
      * @type {Array}
      * @private
      */
-    var _transformedData = [],
+    _transformedData = [],
+
+    /**
+     *
+     * @type {CustomEvent}
+     * @private
+     */
+    _historyEvent,
 
     /**
      *
@@ -28,6 +35,10 @@ App.Components.BarChart = (function(){
     _bars =  [];
 
     /**
+     * Applies the necessary transformations to data
+     * to make it meet the condition required to fit
+     * the DOM layout. Also stores it into the model
+     * for further used by the router.
      *
      * @private
      */
@@ -79,7 +90,7 @@ App.Components.BarChart = (function(){
         App.Model.transformedData = _transformedData;
 
         // Pre-caching the template before bars instantiation
-        App.Utils.Templates.getTemplate('Bars', {}, 'templates').then(
+        App.Utils.Templates.getTemplate('Bars', {}, '/templates').then(
             function(data){
                 _render(data);
             }
@@ -88,18 +99,20 @@ App.Components.BarChart = (function(){
 
     /**
      * Renders each bar sets based on the previously
-     * transformed data above
+     * transformed data above.
      *
      * @private
      */
-    var _render = function(tmpl_src){
-        console.log('BarChart::render - tmpl_src : ', tmpl_src);
+    var _render = function(){
         // Rendering each set of bars
         for ( var i = 0; i < _transformedData.length; i++ ) {
-            console.log('BarChart::render - _transformedData['+i+'] : ', _transformedData[i]);
             // Caching created bars instances for further use
             _bars.push(new App.Components.Bars(_transformedData[i]));
         }
+        // Notifying history module
+        _historyEvent = new CustomEvent('router.refresh');
+        // triggering event to parse url location
+        document.dispatchEvent(_historyEvent);
     };
 
     /**

@@ -8,31 +8,30 @@ App.Components = App.Components || {};
 App.Components.Bars = (function(){
     /**
      * Raw template for building a bar
-     * @type {string}
      *
-     * @private (static)
+     * @type {string}
+     * @private
      */
-    var _barTemplate = '<div class="bar bar--{{name}}" style="width: {{width}}%"><div class="bar__name">{{name}} - {{score}} pts</div></div>';
+    var _barTemplate = '<div class="bar bar--{{name}}" style="width: {{width}}%"><div class="bar__name">{{name}} - {{score}} pts</div></div>\n';
 
     /**
      * Cache original raw template
-     * @type {string}
      *
+     * @type {string}
      * @private (static)
      */
     var _template = '';
 
     /**
-     * Cache original raw template
-     * @type {CustomEvent}
      *
+     * @type {CustomEvent}
      * @private
      */
-    var _openPopinEvent;
+    var _routerEvent;
 
     /**
      *
-     * @param data
+     * @param data {object}
      * @constructor
      */
     function Bars(data){
@@ -49,7 +48,7 @@ App.Components.Bars = (function(){
     Bars.prototype.getTemplate = function(){
         var _this = this;
 
-        App.Utils.Templates.getTemplate('Bars', this.data, 'templates').then(
+        App.Utils.Templates.getTemplate('Bars', this.data, '/templates').then(
             function(data){
                 _this.render(data);
             }
@@ -109,10 +108,20 @@ App.Components.Bars = (function(){
             barElement.addEventListener("click", (function(p){
                 return function(e) {
                     e.preventDefault();
-                    // creating event on the fly to send dynamic parameters
-                    _openPopinEvent = new CustomEvent('open.popin', { 'detail': {data: p}});
-                    // triggering event to open detailed popin
-                    document.dispatchEvent(_openPopinEvent);
+                    // Notifying history module
+                    _routerEvent = new CustomEvent('router.pushstate', { 'detail': {
+                        state: {
+                            index: p.index,
+                            name: p.name,
+                            score: p.score,
+                            date: p.date
+                        },
+                        name : p.date + " " + p.name,
+                        route : "/details/" + p.name + "/" + p.date
+                    }});
+                    // triggering event to push history state
+                    document.dispatchEvent(_routerEvent);
+
                 }
             })(popinData));
         }
@@ -120,7 +129,7 @@ App.Components.Bars = (function(){
 
     /**
      *
-     * @param tmpl_str {string}
+     * @param tmpl_str {string} Raw template string
      * @public
      */
     Bars.prototype.render = function(tmpl_str){

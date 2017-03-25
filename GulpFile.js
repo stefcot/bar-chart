@@ -1,18 +1,21 @@
-var gulp             = require('gulp'),
-    sass             = require('gulp-sass'),
-    uglify           = require('gulp-uglifyjs'),
-    minify           = require('gulp-minify'),
-    concat           = require('gulp-concat-sourcemap'),
-    minifyCss        = require('gulp-minify-css'),
-    sourcemaps       = require('gulp-sourcemaps'),
-    prefix           = require('gulp-autoprefixer'),
-    rename           = require("gulp-rename"),
-    clean            = require('gulp-clean'),
-    watch            = require('gulp-watch'),
-    runSequence      = require('gulp-run-sequence'),
-    webserver        = require('gulp-webserver'),
-    header           = require('gulp-header'),
-    pkg              = require('./package.json');
+var gulp                = require('gulp'),
+    sass                = require('gulp-sass'),
+    sourcemaps          = require('gulp-sourcemaps'),
+    prefix              = require('gulp-autoprefixer'),
+    concat              = require('gulp-concat-sourcemap'),
+    minify              = require('gulp-minify'),
+    minifyCss           = require('gulp-minify-css'),
+    uglify              = require('gulp-uglifyjs'),
+    rename              = require("gulp-rename"),
+    clean               = require('gulp-clean'),
+    watch               = require('gulp-watch'),
+    runSequence         = require('gulp-run-sequence'),
+    webserver           = require('gulp-webserver'),
+    historyApiFallback  = require('connect-history-api-fallback'),
+    favicon             = require('serve-favicon'),
+    header              = require('gulp-header'),
+    path                = require('path'),
+    pkg                 = require('./package.json');
 
 /**
  * Return a header template for CSS and JS generated files
@@ -51,7 +54,9 @@ gulp.task('webserver', function() {
         .pipe(webserver({
             livereload: true,
             directoryListing: false,
-            open: true
+            open: true,
+            path: '/',
+            middleware: [historyApiFallback(), favicon(path.join(__dirname, 'dist', 'favicon.ico'))]
         }));
 });
 
@@ -149,7 +154,7 @@ gulp.task('js:build', function() {
             prefix  : 'stefcot-',
             sourceMappingBaseURL  : true
         }))
-        .pipe(minify())
+        //.pipe(minify())
         // .pipe(uglify('index.js', {
         //     outSourceMap: true
         // }))

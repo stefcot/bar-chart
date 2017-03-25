@@ -2,9 +2,8 @@
 var App = App || {};
 App.Utils = App.Utils || {};
 /**
- * XhrRequest, Xhr Utils
- * Returns a promise instance wrapping a XHR invoked on DOM ContentLoaded
- *
+ * Returns a promise instance wrapping a XHR invoked on DOM ContentLoaded.
+ * Singleton pattern
  */
 App.Utils.Promise = (function(){
     /**
@@ -15,7 +14,7 @@ App.Utils.Promise = (function(){
 
     /**
      *
-     * @type {{0: string}}
+     * @type {object}
      * @private (static)
      */
     var _readyStateMap = {
@@ -28,7 +27,8 @@ App.Utils.Promise = (function(){
 
     /**
      *
-     * @type {{0: string}}
+     * @type value {number}
+     * @return {string}
      * @private
      */
     var _getReadyState = function (value) {
@@ -36,9 +36,11 @@ App.Utils.Promise = (function(){
     };
 
     /**
-    *
-    * @constructor
-    */
+     *
+     * @param settings {object}
+     * @return {Promise}
+     * @private
+     */
     var _promise = function (settings) {
 
         return new Promise(function(resolve, reject) {
@@ -56,12 +58,12 @@ App.Utils.Promise = (function(){
             };
 
             _xhr.onprogress = function () {
-                console.log('Loading file, ', _xhr.readyState);
+                //console.log('Loading file, ', _xhr.readyState);
             };
 
             _xhr.onreadystatechange = function () {
                 if(_xhr.readyState === XMLHttpRequest.DONE && _xhr.status === 200) {
-                    console.log('XhrRequest - Ready state changed, status: ' + _getReadyState(_xhr.readyState));
+                   // console.log('XhrRequest - Ready state changed, status: ' + _getReadyState(_xhr.readyState));
                 }
             };
 
@@ -73,9 +75,9 @@ App.Utils.Promise = (function(){
         });
     };
 
-     /**
-      *
-      */
+    /**
+     * exposing methods
+     */
     return {
         getPromise: _promise
     };
