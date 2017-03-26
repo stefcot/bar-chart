@@ -147,7 +147,7 @@ gulp.task('js:build', function() {
             prefix  : 'stefcot-',
             sourceMappingBaseURL  : true
         }))
-        //.pipe(minify())
+        .pipe(minify())
         // .pipe(uglify('index.js', {
         //     outSourceMap: true
         // }))
