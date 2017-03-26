@@ -31,7 +31,13 @@ then launch the local web-server and run the watch task for live reloading.
 This project was supposed to be delivered developed in native Javascript<br>
 without any library or framework.
 
-##### Exercise reminder
+##### Webstorm project settings
+The webstorm directory contains exproted setting JAR file that can be imported<br>
+for working on the project.<br><br>
+
+<b>Installation directory :</b> *%USER%\.WebStorm{version}\config*
+
+#### Exercise reminder
 >The online Playing Platform exposes players scores over time.<br>
 >It can provide you with data at the following url :<br>
 >[http://cdn.55labs.com/demo/api.json](http://cdn.55labs.com/demo/api.json)<br><br>
