@@ -17,7 +17,7 @@ npm run gulp
 This will install all the necessary gulp suite as well as sass,<br>
 compass mixins, and livere load web server.<br><br>
 Once installed, the server will be launched and a watch task will<br>
-run, meant for a webstorm or sublime text use.
+run, meant for a Webstorm or Sublime Text use.
 
 #### Modifying the project
 To modify the project and see results, just run this :
@@ -32,10 +32,10 @@ This project was supposed to be delivered developed in native Javascript<br>
 without any library or framework.
 
 ##### Webstorm project settings
-The webstorm directory contains exproted setting JAR file that can be imported<br>
+The Webstorm directory contains exported settings .JAR file that can be imported<br>
 for working on the project.<br><br>
 
-<b>Installation directory :</b> *%USER%\.WebStorm{version}\config*
+<b>Installation directory :</b> %USER%/.WebStorm{version}/config
 
 #### Exercise reminder
 >The online Playing Platform exposes players scores over time.<br>
