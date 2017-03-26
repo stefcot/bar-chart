@@ -2,15 +2,17 @@ Bar chart delivery test for Fifty Five March 2017
 =================================================
 
 #### Installation and project launch
-Classic install command for development project environment.
+Classic install command for development project environment.<br>
+If you don't have Node.js installed, see link below.
 ```
 npm install
 ```
-This command will run automatically gulp tasks to setup and run the project
+This command will run automatically gulp tasks to setup and run the project.<br>
+It will will also install Gulp.
 
-##### Gulp Manual install
+##### Project manual install with Gulp
 To install project dependencies, type this command to install<br>
-the project through gulp.
+the project through gulp (run by NPM, in the case of any problem).
 ```
 npm run gulp
 ```
@@ -30,6 +32,14 @@ then launch the local web-server and run the watch task for live reloading.
 #### About the project
 This project was supposed to be delivered developed in native Javascript<br>
 without any library or framework.
+
+##### Project requirements
+To install the project, the required software are listed below:<br>
+
+ - Git for Widows or Mac [https://git-scm.com/downloads](https://git-scm.com/downloads)<br> 
+   for project clone from online repository server.
+ - Node 32/64 bits [https://nodejs.org/en/download/](https://nodejs.org/en/download/)<br>
+   to take advantage of NPM to install the project locally see above 'Installation ...'
 
 ##### Webstorm project settings
 The Webstorm directory contains exported settings .JAR file that can be imported<br>
