@@ -164,7 +164,7 @@ gulp.task('html:build', function() {
 });
 
 /**
- * Simple copy of front files to dist directory on file change.
+ * Simple copy of templates files to dist directory on file change.
  */
 gulp.task('templates:build', function() {
     return gulp.src('./src/templates/**/*')
