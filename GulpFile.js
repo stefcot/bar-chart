@@ -100,7 +100,7 @@ gulp.task('templates:copy', function() {
 });
 
 /**
- * Copies all polyfills listed (extensible)
+ * Copies all polyfills listed to dist directory (extensible)
  */
 gulp.task('polyfills:copy', function() {
     return gulp.src(['./node_modules/custom-event-polyfill/custom-event-polyfill.js',
