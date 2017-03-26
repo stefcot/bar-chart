@@ -51,19 +51,29 @@ var App = (function () {
     };
 
     /**
+     * Replaces the title
+     * @private
+     */
+    var _render = function () {
+        document.querySelector('h1').innerHTML = App.Model.settings.label;
+    };
+
+    /**
      *
      * @private
      */
     var _start = function () {
         if(!_initialized){
             App.Utils.Promise.getPromise({
-                url: App.API_LOCAL_URL,
-                method:'GET',
+                url: App.API_URL,
+                method: 'GET',
                 dataType: 'json'
             }).then(
                 function(response){
                     // Storing data into the model
                     App.Model = _manageJsonResponse(response);
+                    // Replaces the title
+                    _render();
                     // Now that we have the whole story,
                     // we can initialize components
                     _initComponents();

@@ -165,15 +165,13 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directory and files
+# Dependency directory and files to be installed
 node_modules
 bower_components
-jspm_packages
 src/scss/compass-mixins/lib
+src/scss/mathsass
 src/scss/partials/_normalize.scss
-src/js/router/router.es5.min.js
 src/js/polyfills
-src/html/index.bck.html
 
 ################################# GIT #################################
 .gitconfig

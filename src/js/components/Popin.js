@@ -59,6 +59,27 @@ App.Components.Popin = (function(d){
     };
 
     /**
+     * Get first name and last name into the model,
+     * concats both and returns the result.
+     *
+     * @param name {string}
+     * @returns {string}
+     * @private
+     */
+    var _getFullName = function(name){
+        var fullName = '';
+
+        for (var prop in App.Model.settings.dictionary) {
+            if(App.Model.settings.dictionary[prop].firstname.toLowerCase() === name){
+                fullName = App.Model.settings.dictionary[prop].firstname + ' ';
+                fullName += App.Model.settings.dictionary[prop].lastname;
+            }
+        }
+
+        return fullName;
+    };
+
+    /**
      *
      * @private
      */
@@ -119,11 +140,13 @@ App.Components.Popin = (function(d){
      */
     var _populateTemplate = function(tmpl_str){
         var str = tmpl_str,
-            date = _data.date.slice(0, 4) + '/' + _data.date.slice(4,6) + '/' + _data.date.slice(6);
+            date = _data.date.slice(0, 4) + '/' + _data.date.slice(4,6) + '/' + _data.date.slice(6),
+            fullName             = _getFullName(_data.name);
         // Populating template with date, adding css flag for easy component identification
         str = str
                 .replace(/{{date}}/,date)
-                .replace(/{{name}}/g,_data.name)
+                .replace(/{{name}}/, _data.name)
+                .replace(/<h2>{{name}}<\/h2>/, '<h2>' + fullName + '</h2>')
                 .replace(/{{score}}/,_data.score);
         return str;
     };
@@ -138,7 +161,7 @@ App.Components.Popin = (function(d){
         var daily = data,
             dates = daily.dates.filter(_filterData),
             scores = daily.dataByMember.players[_data.name].filter(_filterData),
-            populatedFragment, selector, scoresContainer, btnElement;
+            populatedFragment, selector, scoresContainer;
         // Creating score list
         for ( var i = 0; i < dates.length; i++ ) {
             populatedFragment = _scoreTemplate
@@ -168,6 +191,8 @@ App.Components.Popin = (function(d){
      */
     var _render = function(tmpl_str){
         var populatedTemplate    = _populateTemplate(tmpl_str);
+        //
+
         // Caching raw HTML template for further use/evolution (view refresh for instance)
         _template                = tmpl_str !== undefined ? tmpl_str : _template;
         // Prepending the popin component to the DOM

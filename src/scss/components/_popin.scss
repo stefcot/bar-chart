@@ -30,8 +30,8 @@
       z-index: 3000;
       top: $popin-padding + em;
       right: $popin-padding + em;
-      width: $close-btn-size;
-      height: $close-btn-size;
+      width: $close-btn-size + em;
+      height: $close-btn-size + em;
       display: inline-block;
       background: $white;
 
@@ -49,17 +49,18 @@
       position: absolute;
       background: $sw1-darkgrey;
       width: 3px;
-      height: $close-btn-size;
-      top: 0;
+      height: sqrt(($close-btn-size*$close-btn-size)*2) + em;
+      top: 50%;
       left: 50%;
+      @include transform-origin(center);
     }
 
     #{$content}__cross1 {
-      @include rotateZ(45deg)
+      @include transform(translateX(-50%) translateY(-50%) rotateZ(45deg));
     }
 
     #{$content}__cross2 {
-      @include rotateZ(-45deg)
+      @include transform(translateX(-50%) translateY(-50%) rotateZ(-45deg));
     }
 
     h2 {

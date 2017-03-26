@@ -79,14 +79,16 @@ App.Components.Bars = (function(){
      */
     Bars.prototype.insertBars = function(data){
         var obj = data, popinData,
-            populatedFragment, selector, barsContainer, barElement;
+            populatedFragment, selector, barsContainer, barElement, name;
 
         for ( var i = 0; i < obj.scores.length; i++ ) {
+            name = obj.scores[i].name.charAt(0).toUpperCase() + obj.scores[i].name.slice(1);
             popinData = {};
             populatedFragment = _barTemplate
-                                    .replace(/{{name}}/g,obj.scores[i].name)
-                                    .replace(/{{width}}/g,obj.scores[i].score/10)
-                                    .replace(/{{score}}/g,obj.scores[i].score);
+                                    .replace(/({{name}})/, obj.scores[i].name)
+                                    .replace(/({{name}}\s-)/, name)
+                                    .replace(/{{width}}/g, (obj.scores[i].score / 10).toString())
+                                    .replace(/{{score}}/g, obj.scores[i].score);
             //
             selector         = '.bar-chart__row.bars-' + obj.index.toString() + ' .bars';
             barsContainer    = document.querySelector(selector);

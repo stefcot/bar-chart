@@ -61,6 +61,16 @@ gulp.task('webserver', function() {
 });
 
 /**
+ * Copies Sass math functions
+ *
+ * @see https://www.npmjs.com/package/mathsass
+ */
+gulp.task('mathsass:copy', function() {
+    return gulp.src('./node_modules/mathsass/dist/**/*')
+        .pipe(gulp.dest('./src/scss/modules/mathsass'));
+});
+
+/**
  * Copies compass-mixins installed with NPM to src directory on project install.
  * Here's a simple way to take full advantage of compass environment i.e its mixins,
  * without any hassle, no need to install gulp-compass or some kind of.
@@ -205,7 +215,7 @@ gulp.task('watch', function() {
  * fetches compass environment and JS front dependencies first.
  */
 gulp.task('install', function() {
-    runSequence('compass:copy', 'normalize:copy', 'polyfills:copy', 'build');
+    runSequence('compass:copy', 'mathsass:copy', 'normalize:copy', 'polyfills:copy', 'build');
 });
 
 /**
