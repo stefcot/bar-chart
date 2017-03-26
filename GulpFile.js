@@ -67,7 +67,7 @@ gulp.task('webserver', function() {
  */
 gulp.task('mathsass:copy', function() {
     return gulp.src('./node_modules/mathsass/dist/**/*')
-        .pipe(gulp.dest('./src/scss/modules/mathsass'));
+        .pipe(gulp.dest('./src/scss/mathsass'));
 });
 
 /**
