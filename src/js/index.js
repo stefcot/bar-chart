@@ -12,6 +12,32 @@ var App = (function () {
     var _initialized = false;
 
     /**
+     * Due to a mistyped response caused by the promise polyfill,
+     * involving string response instead of an object,
+     * This snippet of browser sniffing does the job quite nicely.
+     *
+     * @see http://stackoverflow.com/questions/29141337/is-it-possible-to-detect-all-versions-of-ie-with-javascript-how
+     * @return {boolean}
+     * @private
+     */
+    var _manageJsonResponse = function (response) {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        var trident = ua.indexOf('Trident/');
+        var edge = ua.indexOf('Edge/');
+
+        if (msie > 0) {
+            return JSON.parse(response)
+        } else if (trident > 0) {
+            return JSON.parse(response)
+        } else if (edge > 0) {
+            return JSON.parse(response)
+        } else {
+            return response
+        }
+    };
+
+    /**
      * Initialize all importants app
      * modules
      *
@@ -31,18 +57,20 @@ var App = (function () {
     var _start = function () {
         if(!_initialized){
             App.Utils.Promise.getPromise({
-                url: App.API_URL,
+                url: App.API_LOCAL_URL,
                 method:'GET',
                 dataType: 'json'
             }).then(
                 function(response){
                     // Storing data into the model
-                    App.Model = response;
+                    App.Model = _manageJsonResponse(response);
                     // Now that we have the whole story,
                     // we can initialize components
                     _initComponents();
                 },
-                function(errorObject){}
+                function(errorObject){
+                    console.log(errorObject);
+                }
             );
 
             _initialized = true;

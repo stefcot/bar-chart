@@ -103,17 +103,10 @@ gulp.task('templates:copy', function() {
  * Copies all polyfills listed (extensible)
  */
 gulp.task('polyfills:copy', function() {
-    return gulp.src(['./node_modules/custom-event-polyfill/custom-event-polyfill.js'])
+    return gulp.src(['./node_modules/custom-event-polyfill/custom-event-polyfill.js',
+        './node_modules/json3/lib/json3.js',
+        './node_modules/bluebird/js/browser/bluebird.js'])
         .pipe(gulp.dest('./src/js/polyfills'));
-});
-/**
- * Copies simple router to handle hash changes
- *
- * @see https://www.npmjs.com/package/local-router
- */
-gulp.task('router:copy', function() {
-    return gulp.src('./node_modules/local-router/dist/router.es5.min.js')
-        .pipe(gulp.dest('./src/js/router'));
 });
 
 /**
@@ -212,7 +205,7 @@ gulp.task('watch', function() {
  * fetches compass environment and JS front dependencies first.
  */
 gulp.task('install', function() {
-    runSequence('compass:copy', 'normalize:copy', 'polyfills:copy', 'router:copy', 'build');
+    runSequence('compass:copy', 'normalize:copy', 'polyfills:copy', 'build');
 });
 
 /**
