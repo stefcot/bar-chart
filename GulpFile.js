@@ -11,6 +11,8 @@ var gulp                = require('gulp'),
     watch               = require('gulp-watch'),
     runSequence         = require('gulp-run-sequence'),
     webserver           = require('gulp-webserver'),
+    browserSync         = require('browser-sync').create(),
+    reload              = browserSync.reload,
     historyApiFallback  = require('connect-history-api-fallback'),
     favicon             = require('serve-favicon'),
     header              = require('gulp-header'),
@@ -46,6 +48,7 @@ gulp.task('clean', function() {
 
 /**
  * Simple web server with live reload ability for nice testing and design.
+ * Needs middleware listing to handle path refresh.
  *
  * @see https://www.npmjs.com/package/gulp-webserver
  */
@@ -56,8 +59,26 @@ gulp.task('webserver', function() {
             directoryListing: false,
             open: true,
             path: '/',
+            port: 80,
             middleware: [historyApiFallback(), favicon(path.join(__dirname, 'dist', 'favicon.ico'))]
         }));
+});
+
+/**
+ * Simple web server with live reload ability for nice testing and design.
+ * Needs middleware listing to handle path refresh.
+ *
+ * @see https://www.browsersync.io/docs/gulp
+ */
+gulp.task('browsersync', function() {
+    browserSync.init({
+        server: './dist',
+        notify: false,
+        port: 80,
+        open: "local",
+        //browser: ['chrome', 'firefox', 'iexplore', 'safari', 'opera'],
+        middleware: [historyApiFallback(), favicon(path.join(__dirname, 'dist', 'favicon.ico'))]
+    });
 });
 
 /**
@@ -192,21 +213,29 @@ gulp.task('watch', function() {
     watch('./src/scss/**/*.scss', {usePolling: true}, function(vinyl) {
         console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
         gulp.start('sass:build');
+        // Browsersync solution
+        reload();
     });
 
     watch('./src/js/**/*.js', {usePolling: true}, function(vinyl) {
         console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
         gulp.start('js:build');
+        // Browsersync solution
+        reload();
     });
 
     watch('./src/html/**/*', {usePolling: true}, function(vinyl) {
         console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
         gulp.start('html:build');
+        // Browsersync solution
+        reload();
     });
 
     watch('./src/templates/**/*', {usePolling: true}, function(vinyl) {
         console.log('File ' + vinyl.path + ' was "' + vinyl.event + '", running tasks...');
         gulp.start('templates:build');
+        // Browsersync solution
+        reload();
     });
 });
 
@@ -224,7 +253,7 @@ gulp.task('install', function() {
  * finally initiating the watch process, ready to go!
  */
 gulp.task('build', function() {
-    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'templates:copy', 'fonts:copy', 'webserver', 'watch');
+    runSequence('clean', ['sass:build', 'js:build', 'html:build'], 'templates:copy', 'fonts:copy', 'browsersync', 'watch');
 });
 
 /**
